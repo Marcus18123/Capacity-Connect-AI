@@ -9,39 +9,53 @@ const Auth = {
   initLoginForm: function() {
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
-      loginForm.addEventListener('submit', (e) => {
+      loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         
-        // Mock Validation
         if (!email || !password) {
           this.showError('Please fill in all fields.');
           return;
         }
         
-        // Mock role determination based on email for testing
-        let role = 'trainee';
-        if (email.includes('trainer')) role = 'trainer';
-        if (email.includes('admin')) role = 'admin';
-        
-        // Create Mock Session
-        const userSession = {
-          name: email.split('@')[0].split('.').map(n => n.charAt(0).toUpperCase() + n.slice(1)).join(' '),
-          email: email,
-          role: role
-        };
-        
-        localStorage.setItem('ccai_user', JSON.stringify(userSession));
-        
-        // Redirect based on role
-        if (role === 'admin') {
-          window.location.href = 'admin-dashboard.html';
-        } else if (role === 'trainer') {
-          window.location.href = 'trainer-dashboard.html';
-        } else {
-          window.location.href = 'trainee-dashboard.html';
+        try {
+            // FastAPI OAuth2 endpoint requires form-urlencoded
+            const formData = new URLSearchParams();
+            formData.append('username', email);
+            formData.append('password', password);
+
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+
+            if (!response.ok) {
+                const err = await response.json();
+                throw new Error(err.detail || "Login failed");
+            }
+
+            const tokenData = await response.json();
+            localStorage.setItem('capacity_access_token', tokenData.access_token);
+            localStorage.setItem('capacity_refresh_token', tokenData.refresh_token);
+
+            // Fetch user profile
+            const user = await window.api.get('/auth/me');
+            localStorage.setItem('capacity_user', JSON.stringify(user));
+            
+            // Redirect based on role
+            if (user.role === 'ADMIN') {
+                window.location.href = 'admin-dashboard.html';
+            } else if (user.role === 'TRAINER') {
+                window.location.href = 'trainer-dashboard.html';
+            } else {
+                window.location.href = 'trainee-dashboard.html';
+            }
+
+        } catch (error) {
+            this.showError(error.message || 'Authentication failed');
         }
       });
     }
@@ -53,14 +67,13 @@ const Auth = {
   initRegisterForm: function() {
     const registerForm = document.getElementById('registerForm');
     
-    // Toggle additional fields based on role
     const roleSelect = document.getElementById('role');
     if (roleSelect) {
       roleSelect.addEventListener('change', (e) => {
         const traineeFields = document.getElementById('trainee-fields');
         const trainerFields = document.getElementById('trainer-fields');
         
-        if (e.target.value === 'trainer') {
+        if (e.target.value === 'TRAINER') {
           traineeFields.style.display = 'none';
           trainerFields.style.display = 'block';
         } else {
@@ -71,16 +84,18 @@ const Auth = {
     }
 
     if (registerForm) {
-      registerForm.addEventListener('submit', (e) => {
+      registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         
         const name = document.getElementById('fullname').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
         const confirm = document.getElementById('confirmPassword').value;
-        const role = document.getElementById('role').value;
+        let role = document.getElementById('role').value;
         
-        // Mock Validation
+        if (role === 'trainer') role = 'TRAINER';
+        else if (role === 'trainee') role = 'TRAINEE';
+        
         if (password !== confirm) {
           this.showError('Passwords do not match.');
           return;
@@ -91,20 +106,41 @@ const Auth = {
           return;
         }
         
-        // Create Mock Session
-        const userSession = {
-          name: name,
-          email: email,
-          role: role
-        };
-        
-        localStorage.setItem('ccai_user', JSON.stringify(userSession));
-        
-        // Redirect
-        if (role === 'trainer') {
-          window.location.href = 'trainer-dashboard.html';
-        } else {
-          window.location.href = 'trainee-dashboard.html';
+        try {
+            await window.api.post('/auth/register', {
+                name: name,
+                email: email,
+                password: password,
+                role: role
+            });
+            
+            // Auto login after registration
+            const formData = new URLSearchParams();
+            formData.append('username', email);
+            formData.append('password', password);
+
+            const response = await fetch(`${API_BASE_URL}/auth/login`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData
+            });
+
+            if (!response.ok) throw new Error("Auto-login failed");
+
+            const tokenData = await response.json();
+            localStorage.setItem('capacity_access_token', tokenData.access_token);
+            localStorage.setItem('capacity_refresh_token', tokenData.refresh_token);
+
+            const user = await window.api.get('/auth/me');
+            localStorage.setItem('capacity_user', JSON.stringify(user));
+            
+            if (user.role === 'TRAINER') {
+              window.location.href = 'trainer-dashboard.html';
+            } else {
+              window.location.href = 'trainee-dashboard.html';
+            }
+        } catch (error) {
+            this.showError(error.message || 'Registration failed');
         }
       });
     }
@@ -116,9 +152,16 @@ const Auth = {
   initLogout: function() {
     const logoutBtns = document.querySelectorAll('.logout-btn');
     logoutBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', async (e) => {
         e.preventDefault();
-        localStorage.removeItem('ccai_user');
+        try {
+            await window.api.post('/auth/logout', {});
+        } catch (e) {
+            console.error("Logout error", e);
+        }
+        localStorage.removeItem('capacity_access_token');
+        localStorage.removeItem('capacity_refresh_token');
+        localStorage.removeItem('capacity_user');
         window.location.href = 'login.html';
       });
     });

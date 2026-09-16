@@ -3,7 +3,20 @@
  */
 
 const Dashboard = {
-  init: function() {
+  data: null,
+
+  init: async function() {
+    try {
+      if (window.api) {
+        this.data = await window.api.get('/trainees/me/dashboard');
+      } else {
+        throw new Error("API not loaded");
+      }
+    } catch (e) {
+      console.warn("API failed, falling back to mockData", e);
+      this.data = mockData;
+    }
+    
     this.populateKPIs();
     this.renderCompetencyOverview();
     this.renderLearningPath();
@@ -12,7 +25,13 @@ const Dashboard = {
   },
 
   populateKPIs: function() {
-    const user = mockData.user;
+    const user = this.data.user || mockData.user;
+    const kpis = this.data.kpis || { 
+        competency_index: user.competencyIndex, 
+        active_courses: user.activeLearningHours, 
+        skill_gap_count: user.skillGapsCount, 
+        verified_competencies: user.verifiedCompetenciesCount 
+    };
     
     // Welcome message
     const welcomeEl = document.getElementById('welcome-message');
@@ -23,30 +42,29 @@ const Dashboard = {
 
     // KPIs
     const kpiIndex = document.getElementById('kpi-index');
-    if (kpiIndex) kpiIndex.textContent = `${user.competencyIndex}%`;
+    if (kpiIndex) kpiIndex.textContent = `${kpis.competency_index || user.competencyIndex}%`;
 
     const kpiLearning = document.getElementById('kpi-learning');
-    if (kpiLearning) kpiLearning.textContent = `${user.activeLearningHours} hrs`;
+    if (kpiLearning) kpiLearning.textContent = `${kpis.active_courses || user.activeLearningHours}`;
 
     const kpiLearningProgress = document.getElementById('kpi-learning-progress');
     if (kpiLearningProgress) {
-      const pct = (user.activeLearningHours / user.targetHours) * 100;
+      const pct = 50; // Mock default
       kpiLearningProgress.style.width = `${pct}%`;
     }
 
     const kpiGaps = document.getElementById('kpi-gaps');
-    if (kpiGaps) kpiGaps.textContent = user.skillGapsCount;
+    if (kpiGaps) kpiGaps.textContent = kpis.skill_gap_count || user.skillGapsCount;
 
     const kpiVerified = document.getElementById('kpi-verified');
-    if (kpiVerified) kpiVerified.textContent = user.verifiedCompetenciesCount;
+    if (kpiVerified) kpiVerified.textContent = kpis.verified_competencies || user.verifiedCompetenciesCount;
   },
 
   renderCompetencyOverview: function() {
     const container = document.getElementById('competency-bars-container');
     if (!container) return;
 
-    // Filter to show only a few main domains for the dashboard overview
-    const displayComps = mockData.competencies.slice(0, 5);
+    const displayComps = (this.data.competencies || mockData.competencies).slice(0, 5);
 
     let html = '';
     displayComps.forEach(comp => {
@@ -67,7 +85,7 @@ const Dashboard = {
   },
 
   renderLearningPath: function() {
-    const path = mockData.learningPath;
+    const path = this.data.learningPath || mockData.learningPath;
     
     const trackEl = document.getElementById('learning-path-track');
     if (trackEl) trackEl.textContent = path.track;
@@ -100,7 +118,8 @@ const Dashboard = {
     if (!container) return;
 
     let html = '';
-    mockData.skillGaps.forEach(gap => {
+    const gaps = this.data.skillGaps || mockData.skillGaps;
+    gaps.forEach(gap => {
       const badgeClass = AppUtils.getPriorityClass(gap.priority);
       html += `
         <div style="border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: var(--spacing-sm); display: flex; flex-direction: column; gap: var(--spacing-xs);">
@@ -122,7 +141,8 @@ const Dashboard = {
     if (!container) return;
 
     let html = '';
-    mockData.recentActivity.forEach(activity => {
+    const activities = this.data.recentActivity || mockData.recentActivity;
+    activities.forEach(activity => {
       let icon = '📝';
       if (activity.type === 'course') icon = '📚';
       if (activity.type === 'verification') icon = '🏅';
