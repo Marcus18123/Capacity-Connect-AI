@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg-canvas), #eef2ff);
+      padding: var(--spacing-xl) 0;
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 500px;
+      padding: var(--spacing-lg);
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+    .auth-header h1 {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--spacing-xs);
+    }
+    .error-msg {
+      display: none;
+      color: var(--color-danger);
+      background-color: var(--color-danger-light);
+      padding: var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--spacing-md);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="text-primary" style="font-family: var(--font-family-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--spacing-lg);">Capacity Connect AI</div>
+      <h1>Create an Account</h1>
+      <p class="text-muted">Start your competency building journey</p>
+    </div>
+
+    <div id="auth-error" class="error-msg"></div>
+
+    <div class="card">
+      <form id="registerForm">
+        
+        <div class="form-group">
+          <label for="role" class="form-label">I am a...</label>
+          <select id="role" class="form-input" required>
+            <option value="trainee">Trainee</option>
+            <option value="trainer">Trainer</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="fullname" class="form-label">Full Name</label>
+          <input type="text" id="fullname" class="form-input" placeholder="Elena Rostova" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-input" placeholder="name@organization.com" required>
+        </div>
+        
+        <!-- Role Specific Fields -->
+        <div id="trainee-fields">
+          <div class="form-group">
+            <label for="trainee-role" class="form-label">Current Role</label>
+            <input type="text" id="trainee-role" class="form-input" placeholder="e.g. Data Analyst">
+          </div>
+          <div class="form-group">
+            <label for="trainee-org" class="form-label">Organization</label>
+            <input type="text" id="trainee-org" class="form-input" placeholder="Company or Institution name">
+          </div>
+        </div>
+
+        <div id="trainer-fields" style="display: none;">
+          <div class="form-group">
+            <label for="trainer-title" class="form-label">Professional Title</label>
+            <input type="text" id="trainer-title" class="form-input" placeholder="e.g. Senior Data Scientist">
+          </div>
+          <div class="form-group">
+            <label for="trainer-expertise" class="form-label">Primary Expertise</label>
+            <input type="text" id="trainer-expertise" class="form-input" placeholder="e.g. Machine Learning, Python">
+          </div>
+        </div>
+        
+        <div class="form-group">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="password" class="form-input" placeholder="At least 8 characters" required minlength="8">
+        </div>
+        
+        <div class="form-group">
+          <label for="confirmPassword" class="form-label">Confirm Password</label>
+          <input type="password" id="confirmPassword" class="form-input" placeholder="At least 8 characters" required>
+        </div>
+
+        <div class="form-group flex gap-sm" style="align-items: flex-start; margin-top: var(--spacing-lg);">
+          <input type="checkbox" id="terms" required style="margin-top: 4px;">
+          <label for="terms" class="text-sm text-muted">I accept the Terms of Service and Privacy Policy</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-md);">Create Account</button>
+      </form>
+    </div>
+
+    <p class="text-center text-sm text-muted" style="margin-top: var(--spacing-lg);">
+      Already have an account? <a href="login.html">Sign In</a>
+    </p>
+  </div>
+
+  <script src="../js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trainee Dashboard - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainee-dashboard.html" class="nav-item active">
+          <span class="nav-icon">⊞</span> Overview
+        </a>
+        <a href="competency-profile.html" class="nav-item">
+          <span class="nav-icon">📊</span> Competencies
+        </a>
+        <a href="skill-gap.html" class="nav-item">
+          <span class="nav-icon">🎯</span> Skill Gaps
+        </a>
+        <a href="learning-path.html" class="nav-item">
+          <span class="nav-icon">🛣️</span> Learning Path
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">📚</span> Courses
+        </a>
+        <a href="assessments.html" class="nav-item">
+          <span class="nav-icon">📝</span> Assessments
+        </a>
+        <a href="projects.html" class="nav-item">
+          <span class="nav-icon">💼</span> Projects
+        </a>
+        <a href="trainer-matching.html" class="nav-item">
+          <span class="nav-icon">🤝</span> Trainer Matching
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🏅</span> Competency Passport
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🤖</span> AI Mentor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">Dashboard</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search competencies, courses...">
+          </div>
+          <div style="font-size: 1.25rem; cursor: pointer;">🔔</div>
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">User Name</span>
+              <span class="user-role" id="topbar-user-role">Role</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">UN</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <!-- Welcome Header -->
+        <div style="margin-bottom: var(--spacing-xl);">
+          <h2 id="welcome-message" style="font-size: var(--text-2xl); margin-bottom: var(--spacing-xs);">Good morning, Elena</h2>
+          <p class="text-muted">Here is your competency progress and learning journey.</p>
+        </div>
+
+        <!-- KPI Grid -->
+        <div class="grid-kpi">
+          <div class="card">
+            <div class="kpi-label">Competency Index</div>
+            <div class="kpi-value" id="kpi-index">0%</div>
+            <div class="text-xs text-success">↑ 6.4% vs cohort</div>
+          </div>
+          <div class="card">
+            <div class="kpi-label">Active Learning</div>
+            <div class="kpi-value" id="kpi-learning">0 hrs</div>
+            <div class="progress-container">
+              <div class="progress-bar" id="kpi-learning-progress" style="width: 0%"></div>
+            </div>
+          </div>
+          <div class="card">
+            <div class="kpi-label">Identified Skill Gaps</div>
+            <div class="kpi-value text-warning" id="kpi-gaps">0</div>
+            <div class="text-xs text-muted">1 High Priority</div>
+          </div>
+          <div class="card">
+            <div class="kpi-label">Verified Competencies</div>
+            <div class="kpi-value text-success" id="kpi-verified">0</div>
+            <div class="text-xs text-muted">Across 5 domains</div>
+          </div>
+        </div>
+
+        <!-- Main Dashboard Grid -->
+        <div class="grid-main">
+          
+          <!-- Left Column (Wider) -->
+          <div class="flex-col gap-lg">
+            
+            <!-- AI Insight Card -->
+            <div class="card card-ai">
+              <div class="flex justify-between items-center mb-sm">
+                <span class="badge badge-ai">✨ AI INSIGHT</span>
+                <span class="text-xs font-weight-bold text-secondary">98% Business Impact</span>
+              </div>
+              <h3 class="card-title" style="margin-bottom: var(--spacing-xs);">Your next competency opportunity: <span class="text-secondary">Multi-Agent Orchestration with LangGraph</span></h3>
+              <p class="text-muted mb-lg" style="font-size: var(--text-sm);">This competency is highly relevant to your target role as a Senior AI Solutions Architect and connects smoothly with your existing Python and Machine Learning skills.</p>
+              <div class="flex gap-sm">
+                <button class="btn btn-primary">Enroll & Start Lab</button>
+                <button class="btn btn-secondary">View Skill Gap</button>
+              </div>
+            </div>
+
+            <!-- Competency Overview -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Competency Overview</h3>
+                <a href="competency-profile.html" class="text-sm text-secondary font-weight-bold">View Radar</a>
+              </div>
+              <div id="competency-bars-container">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- Current Learning Path -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Current Learning Path</h3>
+                <span class="badge badge-success" id="learning-path-progress-badge">0% Complete</span>
+              </div>
+              <h4 id="learning-path-track" style="color: var(--color-primary); margin-bottom: var(--spacing-sm);">Track Name</h4>
+              
+              <div class="timeline" id="learning-path-timeline">
+                <!-- Injected via JS -->
+              </div>
+              
+              <button class="btn btn-primary" style="margin-top: var(--spacing-md);">Continue Learning</button>
+            </div>
+
+          </div>
+
+          <!-- Right Column (Narrower) -->
+          <div class="flex-col gap-lg">
+            
+            <!-- Skill Gaps Priority -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Priority Skill Gaps</h3>
+                <a href="skill-gap.html" class="text-sm text-secondary font-weight-bold">View All</a>
+              </div>
+              <div id="skill-gap-list" class="flex-col gap-md">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+            <!-- AI Mentor Card -->
+            <div class="card" style="background: linear-gradient(180deg, var(--bg-surface) 0%, #f4f6ff 100%);">
+              <h3 class="card-title mb-sm">Ask your AI Mentor</h3>
+              <p class="text-muted text-sm mb-md">Aura is online and context-aware of your curriculum.</p>
+              
+              <div class="flex-col gap-sm mb-md">
+                <div style="background: white; padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-default); font-size: var(--text-xs); color: var(--color-primary); cursor: pointer;">
+                  "What should I learn next?"
+                </div>
+                <div style="background: white; padding: 0.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-default); font-size: var(--text-xs); color: var(--color-primary); cursor: pointer;">
+                  "Help me prepare for my assessment."
+                </div>
+              </div>
+              
+              <div class="search-bar" style="width: 100%; background: white;">
+                <input type="text" placeholder="Message Aura...">
+                <span style="color: var(--color-secondary); cursor: pointer;">💬</span>
+              </div>
+            </div>
+
+            <!-- Recent Activity -->
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Recent Activity</h3>
+              </div>
+              <div id="recent-activity-list" class="flex-col gap-sm">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/dashboard.js"></script>
+</body>
+</html>

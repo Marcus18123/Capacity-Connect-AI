@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Capacity Connect AI - AI-Powered Competency Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+  <style>
+    /* Landing Page Specific Styles */
+    header.public-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: var(--spacing-md) var(--spacing-lg);
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-default);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    
+    .brand-logo {
+      font-family: var(--font-family-display);
+      font-weight: 700;
+      font-size: var(--text-xl);
+      color: var(--color-primary);
+    }
+    
+    .hero-section {
+      text-align: center;
+      padding: var(--spacing-2xl) var(--spacing-lg);
+      background: linear-gradient(135deg, var(--bg-canvas), #eef2ff);
+    }
+    
+    .hero-title {
+      font-size: var(--text-4xl);
+      margin-bottom: var(--spacing-md);
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .hero-subtitle {
+      font-size: var(--text-lg);
+      color: var(--color-neutral-muted);
+      margin-bottom: var(--spacing-xl);
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    
+    .section-title {
+      text-align: center;
+      font-size: var(--text-3xl);
+      margin-bottom: var(--spacing-xl);
+    }
+    
+    .section {
+      padding: var(--spacing-2xl) 0;
+    }
+    
+    .problem-comparison {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--spacing-xl);
+    }
+    
+    .comparison-card {
+      padding: var(--spacing-lg);
+      border-radius: var(--radius-lg);
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-default);
+    }
+    
+    .comparison-card.bad {
+      border-top: 4px solid var(--color-danger);
+    }
+    
+    .comparison-card.good {
+      border-top: 4px solid var(--color-tertiary);
+      box-shadow: var(--shadow-lg);
+    }
+    
+    .flow-list {
+      display: flex;
+      flex-direction: column;
+      gap: var(--spacing-sm);
+    }
+    
+    .flow-item {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+      font-weight: 600;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: var(--spacing-lg);
+    }
+    
+    .process-steps {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: var(--spacing-lg);
+      text-align: center;
+    }
+    
+    .step {
+      flex: 1;
+      min-width: 120px;
+    }
+    
+    .step-icon {
+      width: 64px;
+      height: 64px;
+      background-color: var(--color-secondary-light);
+      color: var(--color-secondary);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto var(--spacing-md);
+      font-weight: 700;
+      font-size: var(--text-xl);
+    }
+    
+    .footer {
+      background-color: var(--color-primary);
+      color: rgba(255, 255, 255, 0.7);
+      padding: var(--spacing-xl) 0;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="public-header container">
+    <div class="brand-logo">Capacity Connect AI</div>
+    <div class="header-actions flex gap-md">
+      <a href="Pages/login.html" class="btn btn-outline">Log In</a>
+      <a href="Pages/register.html" class="btn btn-primary">Sign Up</a>
+    </div>
+  </header>
+
+  <!-- 1. Hero Section -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="hero-title">Turn Skill Gaps Into Verified Competencies</h1>
+      <p class="hero-subtitle">Capacity Connect AI transforms learning from course completion into an intelligent competency-building journey.</p>
+      <div class="flex justify-center gap-md">
+        <a href="Pages/register.html" class="btn btn-primary">Get Started</a>
+        <a href="#problem" class="btn btn-secondary">Explore Platform</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Problem Section -->
+  <section id="problem" class="section container">
+    <h2 class="section-title">The Capacity Building Problem</h2>
+    <div class="problem-comparison">
+      <div class="comparison-card bad">
+        <h3 class="text-danger mb-md">Traditional Learning</h3>
+        <p class="text-muted mb-lg">A linear path that doesn't guarantee real-world capability.</p>
+        <div class="flow-list">
+          <div class="flow-item"><span>1.</span> Find Course</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item"><span>2.</span> Watch Content</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item"><span>3.</span> Certificate</div>
+        </div>
+      </div>
+      <div class="comparison-card good card-ai">
+        <h3 class="text-primary mb-md">Capacity Connect AI</h3>
+        <p class="text-muted mb-lg">An intelligent ecosystem verifying true competency.</p>
+        <div class="flow-list">
+          <div class="flow-item"><span>1.</span> Profile & Competency Mapping</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item"><span>2.</span> AI Skill Gap Analysis</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item"><span>3.</span> Personalized Learning</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item"><span>4.</span> Assessment & Verification</div>
+          <div class="flow-item text-muted">↓</div>
+          <div class="flow-item text-success"><span>5.</span> Organizational Intelligence</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Core Capabilities -->
+  <section class="section bg-surface">
+    <div class="container">
+      <h2 class="section-title">Core Capabilities</h2>
+      <div class="features-grid">
+        <div class="card">
+          <h3 class="card-title">AI Competency Mapping</h3>
+          <p class="text-muted mt-sm">Extract skills automatically from resumes and map them to standard industry graphs.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Personalized Learning Paths</h3>
+          <p class="text-muted mt-sm">Dynamic course generation based specifically on individual skill gaps.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">AI Skill Gap Analysis</h3>
+          <p class="text-muted mt-sm">Compare current abilities against target roles instantly.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Trainer Matching</h3>
+          <p class="text-muted mt-sm">Intelligently connect trainees with the best experts for their specific missing competencies.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Competency Verification</h3>
+          <p class="text-muted mt-sm">Move beyond certificates. Verify skills through assessments and projects.</p>
+        </div>
+        <div class="card">
+          <h3 class="card-title">Organizational Capacity Intelligence</h3>
+          <p class="text-muted mt-sm">Heatmaps and dashboards showing exact organizational shortages.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. How it works -->
+  <section class="section container">
+    <h2 class="section-title">How It Works</h2>
+    <div class="process-steps">
+      <div class="step">
+        <div class="step-icon">1</div>
+        <h4>Profile</h4>
+      </div>
+      <div class="step">
+        <div class="step-icon">2</div>
+        <h4>Map</h4>
+      </div>
+      <div class="step">
+        <div class="step-icon">3</div>
+        <h4>Identify</h4>
+      </div>
+      <div class="step">
+        <div class="step-icon">4</div>
+        <h4>Learn</h4>
+      </div>
+      <div class="step">
+        <div class="step-icon">5</div>
+        <h4>Verify</h4>
+      </div>
+      <div class="step">
+        <div class="step-icon">6</div>
+        <h4>Grow</h4>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Roles -->
+  <section class="section bg-surface">
+    <div class="container">
+      <h2 class="section-title">Built for the Enterprise</h2>
+      <div class="features-grid">
+        <div class="card">
+          <span class="badge badge-ai mb-sm">For Learners</span>
+          <h3 class="card-title">Trainee</h3>
+          <p class="text-muted mt-sm">Discover what you're missing, learn exactly what you need, and build a verified competency passport.</p>
+        </div>
+        <div class="card">
+          <span class="badge badge-ai mb-sm">For Experts</span>
+          <h3 class="card-title">Trainer</h3>
+          <p class="text-muted mt-sm">Showcase expertise, evaluate practical projects, and get matched with trainees who need your skills.</p>
+        </div>
+        <div class="card">
+          <span class="badge badge-ai mb-sm">For Leadership</span>
+          <h3 class="card-title">Administrator</h3>
+          <p class="text-muted mt-sm">Analyze organizational skill shortages through heatmaps and plan data-driven capacity-building.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. AI Section -->
+  <section class="section container">
+    <div class="card card-ai text-center" style="max-width: 800px; margin: 0 auto; padding: var(--spacing-xl);">
+      <h2 class="section-title mb-sm" style="color: var(--color-primary);">Powered by Artificial Intelligence</h2>
+      <p class="text-muted mb-lg">AI works silently in the background to orchestrate the learning journey.</p>
+      <div class="flex flex-wrap justify-center gap-md">
+        <span class="badge badge-ai">Skill Extraction</span>
+        <span class="badge badge-ai">Learning Recommendations</span>
+        <span class="badge badge-ai">Assessment Generation</span>
+        <span class="badge badge-ai">Trainer Matching</span>
+        <span class="badge badge-ai">Capacity Planning</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 7. CTA -->
+  <section class="hero-section" style="padding: var(--spacing-2xl) var(--spacing-lg);">
+    <div class="container text-center">
+      <h2 class="hero-title" style="font-size: var(--text-3xl);">Build Your Competency Journey</h2>
+      <p class="text-muted mb-lg">Join the intelligent capacity-building platform today.</p>
+      <a href="Pages/register.html" class="btn btn-primary" style="font-size: var(--text-lg); padding: var(--spacing-sm) var(--spacing-xl);">Get Started</a>
+    </div>
+  </section>
+
+  <!-- 8. Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="brand-logo mb-md" style="color: white;">Capacity Connect AI</div>
+      <p>&copy; 2026 Capacity Connect AI. Enterprise Competency Intelligence.</p>
+    </div>
+  </footer>
+
+</body>
+</html>

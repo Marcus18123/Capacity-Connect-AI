@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Competency Profile - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainee-dashboard.html" class="nav-item">
+          <span class="nav-icon">⊞</span> Overview
+        </a>
+        <a href="competency-profile.html" class="nav-item active">
+          <span class="nav-icon">📊</span> Competencies
+        </a>
+        <a href="skill-gap.html" class="nav-item">
+          <span class="nav-icon">🎯</span> Skill Gaps
+        </a>
+        <a href="learning-path.html" class="nav-item">
+          <span class="nav-icon">🛣️</span> Learning Path
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">📚</span> Courses
+        </a>
+        <a href="assessments.html" class="nav-item">
+          <span class="nav-icon">📝</span> Assessments
+        </a>
+        <a href="projects.html" class="nav-item">
+          <span class="nav-icon">💼</span> Projects
+        </a>
+        <a href="trainer-matching.html" class="nav-item">
+          <span class="nav-icon">🤝</span> Trainer Matching
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🏅</span> Competency Passport
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🤖</span> AI Mentor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">Competency Profile</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search competencies, courses...">
+          </div>
+          <div style="font-size: 1.25rem; cursor: pointer;">🔔</div>
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">User Name</span>
+              <span class="user-role" id="topbar-user-role">Role</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">UN</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <div class="flex justify-between items-center mb-xl">
+          <div>
+            <h2 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-xs);">Your Verified Competencies</h2>
+            <p class="text-muted">A complete breakdown of your skills, verifications, and progress.</p>
+          </div>
+          <button class="btn btn-primary">Upload Evidence</button>
+        </div>
+
+        <div class="grid-main">
+          
+          <div class="card" style="grid-column: span 2;">
+            <div class="card-header">
+              <h3 class="card-title">Competency Inventory</h3>
+              <div class="flex gap-sm">
+                <span class="badge badge-success">Verified: <span id="comp-verified-count">0</span></span>
+                <span class="badge badge-warning">Assessed: <span id="comp-assessed-count">0</span></span>
+                <span class="badge badge-danger">Unverified: <span id="comp-unverified-count">0</span></span>
+              </div>
+            </div>
+            
+            <div style="overflow-x: auto;">
+              <table style="width: 100%; text-align: left; border-collapse: collapse;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--border-default);">
+                    <th style="padding: var(--spacing-md) var(--spacing-sm); font-size: var(--text-sm); color: var(--color-neutral-muted);">Competency</th>
+                    <th style="padding: var(--spacing-md) var(--spacing-sm); font-size: var(--text-sm); color: var(--color-neutral-muted);">Current Level</th>
+                    <th style="padding: var(--spacing-md) var(--spacing-sm); font-size: var(--text-sm); color: var(--color-neutral-muted);">Target Level</th>
+                    <th style="padding: var(--spacing-md) var(--spacing-sm); font-size: var(--text-sm); color: var(--color-neutral-muted);">Progress</th>
+                    <th style="padding: var(--spacing-md) var(--spacing-sm); font-size: var(--text-sm); color: var(--color-neutral-muted);">Verification Status</th>
+                  </tr>
+                </thead>
+                <tbody id="competency-table-body">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/competency.js"></script>
+</body>
+</html>

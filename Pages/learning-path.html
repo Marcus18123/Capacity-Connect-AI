@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Learning Path - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .path-step {
+      display: flex;
+      gap: var(--spacing-lg);
+      padding: var(--spacing-lg) 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+    
+    .step-number {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background-color: var(--bg-surface);
+      border: 2px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--color-neutral-muted);
+      flex-shrink: 0;
+    }
+    
+    .path-step.completed .step-number {
+      background-color: var(--color-success);
+      border-color: var(--color-success);
+      color: white;
+    }
+    
+    .path-step.active .step-number {
+      background-color: var(--color-secondary);
+      border-color: var(--color-secondary);
+      color: white;
+      box-shadow: 0 0 0 4px var(--color-secondary-light);
+    }
+    
+    .step-content {
+      flex: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainee-dashboard.html" class="nav-item">
+          <span class="nav-icon">⊞</span> Overview
+        </a>
+        <a href="competency-profile.html" class="nav-item">
+          <span class="nav-icon">📊</span> Competencies
+        </a>
+        <a href="skill-gap.html" class="nav-item">
+          <span class="nav-icon">🎯</span> Skill Gaps
+        </a>
+        <a href="learning-path.html" class="nav-item active">
+          <span class="nav-icon">🛣️</span> Learning Path
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">📚</span> Courses
+        </a>
+        <a href="assessments.html" class="nav-item">
+          <span class="nav-icon">📝</span> Assessments
+        </a>
+        <a href="projects.html" class="nav-item">
+          <span class="nav-icon">💼</span> Projects
+        </a>
+        <a href="trainer-matching.html" class="nav-item">
+          <span class="nav-icon">🤝</span> Trainer Matching
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🏅</span> Competency Passport
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🤖</span> AI Mentor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">Personalized Learning Path</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search competencies, courses...">
+          </div>
+          <div style="font-size: 1.25rem; cursor: pointer;">🔔</div>
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">User Name</span>
+              <span class="user-role" id="topbar-user-role">Role</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">UN</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <div class="grid-main">
+          
+          <div class="flex-col gap-lg">
+            
+            <div class="card">
+              <div class="flex justify-between items-center mb-md">
+                <div>
+                  <div class="text-sm text-muted mb-xs">Target Role</div>
+                  <h2 style="font-size: var(--text-xl); color: var(--color-primary);">Senior AI Solutions Architect</h2>
+                </div>
+                <div style="text-align: right;">
+                  <div class="text-sm text-muted mb-xs">Expected Outcome</div>
+                  <span class="badge badge-success">Advanced Competency Verified</span>
+                </div>
+              </div>
+              
+              <div class="progress-container" style="height: 12px;">
+                <div class="progress-bar" style="width: 68%;"></div>
+              </div>
+              <div class="text-xs text-muted mt-sm text-right">68% Alignment</div>
+            </div>
+
+            <!-- Path Steps -->
+            <div class="card">
+              <h3 class="card-title mb-md">Your Journey</h3>
+              
+              <div id="learning-path-steps">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <div class="flex-col gap-lg">
+            
+            <!-- AI Explanation -->
+            <div class="card card-ai">
+              <span class="badge badge-ai mb-sm">✨ AI Mentor Insight</span>
+              <h3 class="card-title mb-sm">Why this path?</h3>
+              <p class="text-sm text-muted mb-md">
+                This curriculum was dynamically assembled because your current profile shows strong foundations in Python and Data Analysis, but lacks the specific architectural knowledge required for production LLM systems.
+              </p>
+              <p class="text-sm text-muted mb-lg">
+                By focusing on <strong class="text-primary">Multi-Agent Swarms</strong>, you bypass introductory content and directly address the highest-priority skill gap for the Senior Architect role.
+              </p>
+              <button class="btn btn-secondary w-full" style="width: 100%;">Discuss with AI Mentor</button>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/learning-path.js"></script>
+</body>
+</html>

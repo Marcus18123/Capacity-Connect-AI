@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Log In - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      background: linear-gradient(135deg, var(--bg-canvas), #eef2ff);
+    }
+    .auth-container {
+      width: 100%;
+      max-width: 400px;
+      padding: var(--spacing-lg);
+    }
+    .auth-header {
+      text-align: center;
+      margin-bottom: var(--spacing-xl);
+    }
+    .auth-header h1 {
+      font-size: var(--text-2xl);
+      margin-bottom: var(--spacing-xs);
+    }
+    .error-msg {
+      display: none;
+      color: var(--color-danger);
+      background-color: var(--color-danger-light);
+      padding: var(--spacing-sm);
+      border-radius: var(--radius-sm);
+      margin-bottom: var(--spacing-md);
+      font-size: var(--text-sm);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="auth-container">
+    <div class="auth-header">
+      <div class="text-primary" style="font-family: var(--font-family-display); font-weight: 700; font-size: var(--text-xl); margin-bottom: var(--spacing-lg);">Capacity Connect AI</div>
+      <h1>Welcome back</h1>
+      <p class="text-muted">Enter your details to access your account</p>
+    </div>
+
+    <div id="auth-error" class="error-msg"></div>
+
+    <div class="card">
+      <form id="loginForm">
+        <div class="form-group">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" class="form-input" placeholder="name@organization.com" required>
+        </div>
+        
+        <div class="form-group">
+          <div class="flex justify-between items-center mb-xs">
+            <label for="password" class="form-label" style="margin:0;">Password</label>
+            <a href="#" class="text-xs text-secondary">Forgot password?</a>
+          </div>
+          <input type="password" id="password" class="form-input" placeholder="••••••••" required>
+        </div>
+
+        <div class="form-group flex items-center gap-sm">
+          <input type="checkbox" id="remember">
+          <label for="remember" class="text-sm text-muted">Remember me</label>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: var(--spacing-md);">Sign In</button>
+      </form>
+    </div>
+
+    <p class="text-center text-sm text-muted" style="margin-top: var(--spacing-lg);">
+      Don't have an account? <a href="register.html">Create one</a>
+    </p>
+    
+    <div class="text-center text-xs text-muted" style="margin-top: var(--spacing-xl);">
+      <p><strong>Demo Note:</strong> Use any email to login.</p>
+      <p>Emails with "trainer" -> Trainer Dashboard.</p>
+      <p>Emails with "admin" -> Admin Dashboard.</p>
+      <p>Otherwise -> Trainee Dashboard.</p>
+    </div>
+  </div>
+
+  <script src="../js/auth.js"></script>
+</body>
+</html>

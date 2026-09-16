@@ -1,0 +1,62 @@
+/* ==========================================================================
+   CAPACITY CONNECT AI - Responsive Media Queries
+   ========================================================================== */
+
+/* Tablet (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .grid-main {
+    grid-template-columns: 1fr;
+  }
+  
+  .grid-kpi {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Mobile & Tablet Portrait (max-width: 768px) */
+@media (max-width: 768px) {
+  /* Sidebar handling */
+  .sidebar {
+    transform: translateX(-100%);
+  }
+  
+  .sidebar.open {
+    transform: translateX(0);
+    box-shadow: var(--shadow-lg);
+  }
+  
+  .main-wrapper {
+    margin-left: 0;
+  }
+  
+  .menu-toggle {
+    display: block;
+  }
+  
+  .search-bar {
+    display: none; /* Hide on small screens for simplicity */
+  }
+  
+  .user-info {
+    display: none; /* Show only avatar on mobile */
+  }
+  
+  .page-content {
+    padding: var(--spacing-md);
+  }
+}
+
+/* Small Mobile (max-width: 480px) */
+@media (max-width: 480px) {
+  .grid-kpi {
+    grid-template-columns: 1fr;
+  }
+  
+  .card {
+    padding: var(--spacing-md);
+  }
+  
+  .page-title {
+    font-size: var(--text-lg);
+  }
+}

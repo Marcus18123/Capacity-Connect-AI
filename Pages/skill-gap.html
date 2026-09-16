@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Skill Gaps - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+  <style>
+    .gap-comparison {
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      align-items: center;
+      gap: var(--spacing-md);
+      padding: var(--spacing-sm) 0;
+      border-bottom: 1px solid var(--border-default);
+    }
+    
+    .gap-bars {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    
+    .gap-bar-row {
+      display: flex;
+      align-items: center;
+      gap: var(--spacing-sm);
+    }
+    
+    .gap-bar-label {
+      width: 60px;
+      font-size: var(--text-xs);
+      color: var(--color-neutral-muted);
+      text-align: right;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainee-dashboard.html" class="nav-item">
+          <span class="nav-icon">⊞</span> Overview
+        </a>
+        <a href="competency-profile.html" class="nav-item">
+          <span class="nav-icon">📊</span> Competencies
+        </a>
+        <a href="skill-gap.html" class="nav-item active">
+          <span class="nav-icon">🎯</span> Skill Gaps
+        </a>
+        <a href="learning-path.html" class="nav-item">
+          <span class="nav-icon">🛣️</span> Learning Path
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">📚</span> Courses
+        </a>
+        <a href="assessments.html" class="nav-item">
+          <span class="nav-icon">📝</span> Assessments
+        </a>
+        <a href="projects.html" class="nav-item">
+          <span class="nav-icon">💼</span> Projects
+        </a>
+        <a href="trainer-matching.html" class="nav-item">
+          <span class="nav-icon">🤝</span> Trainer Matching
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🏅</span> Competency Passport
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🤖</span> AI Mentor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">AI Skill Gap Analysis</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search competencies, courses...">
+          </div>
+          <div style="font-size: 1.25rem; cursor: pointer;">🔔</div>
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">User Name</span>
+              <span class="user-role" id="topbar-user-role">Role</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">UN</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <div class="grid-main">
+          
+          <div class="flex-col gap-lg">
+            
+            <!-- Summary Card -->
+            <div class="card flex justify-between items-center" style="background: linear-gradient(135deg, var(--color-primary), #312e81); color: white; border: none;">
+              <div>
+                <div class="text-sm" style="color: rgba(255,255,255,0.7); margin-bottom: 4px;">Target Role</div>
+                <h2 style="font-size: var(--text-2xl); color: white;">Senior AI Solutions Architect</h2>
+              </div>
+              <div style="text-align: right;">
+                <div class="text-sm" style="color: rgba(255,255,255,0.7); margin-bottom: 4px;">Overall Alignment</div>
+                <div style="font-size: var(--text-3xl); font-weight: 700; color: var(--color-tertiary);">68%</div>
+              </div>
+            </div>
+
+            <!-- Gaps Comparison -->
+            <div class="card">
+              <h3 class="card-title mb-lg">Current Competency vs Target</h3>
+              
+              <div id="gap-comparison-list">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+          </div>
+
+          <div class="flex-col gap-lg">
+            
+            <!-- AI Analysis -->
+            <div class="card card-ai">
+              <span class="badge badge-ai mb-sm">✨ AI Analysis</span>
+              <h3 class="card-title mb-sm">Priority Intervention Required</h3>
+              <p class="text-sm text-muted mb-md">
+                The system has identified <strong class="text-primary">Autonomous Multi-Agent Swarms</strong> and <strong class="text-primary">Latency Optimization</strong> as the most critical gaps preventing alignment with your target role.
+              </p>
+              <p class="text-sm text-muted mb-lg">
+                Addressing these gaps will increase your overall alignment score by approximately 27%.
+              </p>
+              
+              <button id="generate-path-btn" class="btn btn-secondary w-full" style="width: 100%;">Generate Learning Path</button>
+              
+              <div id="ai-notification" class="text-xs text-secondary mt-sm" style="display: none; text-align: center;">
+                Learning path generation will be connected to the AI engine in Phase 2.
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/skill-gap.js"></script>
+</body>
+</html>

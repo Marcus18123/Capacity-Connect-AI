@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Projects - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
+</head>
+<body>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainee-dashboard.html" class="nav-item">
+          <span class="nav-icon">⊞</span> Overview
+        </a>
+        <a href="competency-profile.html" class="nav-item">
+          <span class="nav-icon">📊</span> Competencies
+        </a>
+        <a href="skill-gap.html" class="nav-item">
+          <span class="nav-icon">🎯</span> Skill Gaps
+        </a>
+        <a href="learning-path.html" class="nav-item">
+          <span class="nav-icon">🛣️</span> Learning Path
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">📚</span> Courses
+        </a>
+        <a href="assessments.html" class="nav-item">
+          <span class="nav-icon">📝</span> Assessments
+        </a>
+        <a href="projects.html" class="nav-item active">
+          <span class="nav-icon">💼</span> Projects
+        </a>
+        <a href="trainer-matching.html" class="nav-item">
+          <span class="nav-icon">🤝</span> Trainer Matching
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🏅</span> Competency Passport
+        </a>
+        <a href="#" class="nav-item">
+          <span class="nav-icon">🤖</span> AI Mentor
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">Applied Projects</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="search-bar">
+            <span>🔍</span>
+            <input type="text" placeholder="Search competencies, courses...">
+          </div>
+          <div style="font-size: 1.25rem; cursor: pointer;">🔔</div>
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">User Name</span>
+              <span class="user-role" id="topbar-user-role">Role</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">UN</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <div class="flex justify-between items-center mb-xl">
+          <div>
+            <h2 style="font-size: var(--text-2xl); margin-bottom: var(--spacing-xs);">Project Portfolio</h2>
+            <p class="text-muted">Real-world applications to verify your highest-level competencies.</p>
+          </div>
+          <button class="btn btn-primary">Start New Project</button>
+        </div>
+
+        <div class="grid-main" style="grid-template-columns: 1fr;">
+          
+          <!-- Sample Project -->
+          <div class="card" style="display: flex; gap: var(--spacing-lg); flex-wrap: wrap;">
+            <div style="flex: 1; min-width: 300px;">
+              <div class="flex gap-sm items-center mb-xs">
+                <h3 class="card-title" style="margin: 0; font-size: var(--text-xl);">Weather Data Analysis Dashboard</h3>
+                <span class="badge badge-success">Verified</span>
+              </div>
+              <div class="text-sm text-muted mb-md"><strong class="text-neutral">Competency Target:</strong> Python, Data Visualization</div>
+              <p class="text-sm text-muted mb-lg">
+                Built an interactive dashboard using Streamlit to visualize 10 years of historical weather data, identifying anomalies and predicting future trends using basic ARIMA models.
+              </p>
+              
+              <div class="flex gap-sm">
+                <button class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);">View Repository</button>
+                <button class="btn btn-outline btn-sm" style="padding: 0.25rem 0.5rem; font-size: var(--text-xs);">View Feedback</button>
+              </div>
+            </div>
+            
+            <div style="width: 300px; background-color: var(--bg-canvas); border-radius: var(--radius-md); border: 1px solid var(--border-default); display: flex; align-items: center; justify-content: center; min-height: 150px; flex-shrink: 0;">
+              <div class="text-muted text-sm text-center">
+                <span style="font-size: 2rem; display: block; margin-bottom: var(--spacing-xs);">📊</span>
+                Project Dashboard Image
+              </div>
+            </div>
+          </div>
+
+          <!-- Locked Project -->
+          <div class="card" style="opacity: 0.7;">
+            <div class="flex justify-between items-start mb-xs">
+              <h3 class="card-title" style="margin: 0; font-size: var(--text-xl);">Autonomous Multi-Agent Workflow</h3>
+              <span class="badge badge-warning">Locked</span>
+            </div>
+            <div class="text-sm text-muted mb-md"><strong class="text-neutral">Competency Target:</strong> Multi-Agent Swarms, LangGraph</div>
+            <p class="text-sm text-muted">
+              Design a team of agents that collaborate to research, write, and review technical reports automatically.
+            </p>
+            <div class="text-xs text-danger font-weight-bold mt-sm">Requires completion of "Time-Series Forecasting" module first.</div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/auth.js"></script>
+</body>
+</html>
