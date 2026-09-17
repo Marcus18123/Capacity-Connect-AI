@@ -25,7 +25,7 @@ class User(BaseModel):
 
     trainee_profile = relationship("TraineeProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
     trainer_profile = relationship("TrainerProfile", back_populates="user", uselist=False, cascade="all, delete-orphan")
-    user_competencies = relationship("UserCompetency", back_populates="user", cascade="all, delete-orphan")
+    user_competencies = relationship("UserCompetency", back_populates="user", foreign_keys="UserCompetency.user_id", cascade="all, delete-orphan")
     trainer_expertise = relationship("TrainerExpertise", back_populates="trainer", cascade="all, delete-orphan")
     enrollments = relationship("Enrollment", back_populates="trainee", cascade="all, delete-orphan")
     assessment_results = relationship("AssessmentResult", back_populates="trainee", cascade="all, delete-orphan")
