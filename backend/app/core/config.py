@@ -24,6 +24,14 @@ class Settings(BaseSettings):
     def cors_origins_list(self) -> List[str]:
         return [origin.strip() for origin in self.CORS_ORIGINS.split(",")]
 
+    # AI Configuration
+    AI_PROVIDER: str = "mock"
+    AI_MODEL: str = "gemini-1.5-pro"
+    AI_API_KEY: str = ""
+    AI_TEMPERATURE: float = 0.7
+    AI_MAX_TOKENS: int = 2048
+    AI_TIMEOUT_SECONDS: int = 30
+
     model_config = SettingsConfigDict(
         env_file=os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), ".env"),
         env_file_encoding='utf-8',

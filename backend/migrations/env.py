@@ -31,6 +31,9 @@ from app.models.learning_path import LearningPath
 from app.models.learning_path_item import LearningPathItem
 from app.models.skill_gap import SkillGap
 from app.models.notification import Notification
+from app.models.role import Role, RoleCompetency
+from app.models.ai_tracking import AIRequest, AIInsight
+from app.models.competency_history import CompetencyHistory
 
 config = context.config
 

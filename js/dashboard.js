@@ -22,6 +22,37 @@ const Dashboard = {
     this.renderLearningPath();
     this.renderSkillGaps();
     this.renderRecentActivity();
+    this.fetchAndRenderAIInsights();
+  },
+
+  fetchAndRenderAIInsights: async function() {
+    try {
+        if (window.api) {
+            const insights = await window.api.get('/ai/insights');
+            const container = document.getElementById('ai-insights-container');
+            if (!container) {
+                // If container doesn't exist, we inject it at the top of the dashboard main content
+                const mainContent = document.querySelector('.main-content');
+                if (mainContent) {
+                    const insightHTML = insights.map(i => `
+                        <div style="background: var(--bg-surface); padding: var(--spacing-md); border-radius: var(--radius-md); border-left: 4px solid var(--color-primary); margin-bottom: var(--spacing-md); box-shadow: var(--shadow-sm);">
+                            <div class="flex items-center justify-between" style="margin-bottom: var(--spacing-xs);">
+                                <h3 class="text-md font-weight-bold" style="margin:0;"><span style="color:var(--color-primary)">✨ AI Insight:</span> ${i.title}</h3>
+                                <span class="badge ${i.severity === 'CRITICAL' ? 'danger' : 'primary'}">${i.severity}</span>
+                            </div>
+                            <p class="text-sm text-secondary" style="margin:0;">${i.summary}</p>
+                        </div>
+                    `).join('');
+                    
+                    const insightDiv = document.createElement('div');
+                    insightDiv.innerHTML = insightHTML;
+                    mainContent.insertBefore(insightDiv, mainContent.firstChild);
+                }
+            }
+        }
+    } catch(e) {
+        console.warn("Could not fetch AI insights", e);
+    }
   },
 
   populateKPIs: function() {
