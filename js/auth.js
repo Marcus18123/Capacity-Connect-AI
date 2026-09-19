@@ -40,8 +40,9 @@ const Auth = {
           localStorage.setItem('capacity_access_token', tokenData.access_token);
           localStorage.setItem('capacity_refresh_token', tokenData.refresh_token);
 
-          const user = await window.api.get('/auth/me');
+          const user = await window.api.get('/auth/me', { token: tokenData.access_token });
           localStorage.setItem('capacity_user', JSON.stringify(user));
+
 
           if (user.role === 'ADMIN') {
             window.location.href = 'admin-dashboard.html';
@@ -133,8 +134,12 @@ const Auth = {
           localStorage.setItem('capacity_access_token', tokenData.access_token);
           localStorage.setItem('capacity_refresh_token', tokenData.refresh_token);
 
-          const user = await window.api.get('/auth/me');
-          localStorage.setItem('capacity_user', JSON.stringify(user));
+          try {
+            const user = await window.api.get('/auth/me');
+            localStorage.setItem('capacity_user', JSON.stringify(user));
+          } catch(e) {
+            console.warn("Could not fetch user profile immediately after registration", e);
+          }
 
           window.location.href = 'trainee-dashboard.html';
         } catch (error) {
@@ -143,6 +148,7 @@ const Auth = {
       });
     }
   },
+
 
   /**
    * Initializes logout buttons

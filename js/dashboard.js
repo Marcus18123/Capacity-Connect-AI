@@ -10,20 +10,49 @@ const Dashboard = {
       if (window.api) {
         this.data = await window.api.get('/trainees/me/dashboard');
       } else {
-        throw new Error("API not loaded");
+        throw new Error("API module window.api is missing.");
       }
     } catch (e) {
-      console.warn("API failed, falling back to mockData", e);
-      this.data = mockData;
+      console.error("Dashboard data load error:", e);
+      this.data = { user: {}, kpis: {}, recent_activity: [] };
     }
     
     this.populateKPIs();
-    this.renderCompetencyOverview();
-    this.renderLearningPath();
-    this.renderSkillGaps();
+    await this.fetchCompetencies();
+    await this.fetchLearningPath();
+    await this.fetchSkillGaps();
     this.renderRecentActivity();
     this.fetchAndRenderAIInsights();
   },
+
+  fetchCompetencies: async function() {
+    try {
+      this.competencies = await window.api.get('/trainees/me/competencies');
+      this.renderCompetencyOverview();
+    } catch (e) {
+      console.warn("Could not fetch competencies", e);
+    }
+  },
+
+  fetchLearningPath: async function() {
+    try {
+      this.learningPath = await window.api.get('/trainees/me/learning-path');
+      this.renderLearningPath();
+    } catch (e) {
+      console.warn("Could not fetch learning path", e);
+    }
+  },
+
+  fetchSkillGaps: async function() {
+    try {
+      const result = await window.api.get('/trainees/me/skill-gaps');
+      this.skillGaps = result.skill_gaps || [];
+      this.renderSkillGaps();
+    } catch (e) {
+      console.warn("Could not fetch skill gaps", e);
+    }
+  },
+
 
   fetchAndRenderAIInsights: async function() {
     try {
@@ -96,18 +125,23 @@ const Dashboard = {
     const container = document.getElementById('competency-bars-container');
     if (!container) return;
 
-    const displayComps = (this.data.competencies || mockData.competencies).slice(0, 5);
+    const list = this.competencies || [];
+    if (!list.length) {
+      container.innerHTML = `<div class="text-xs text-muted p-sm">No competencies found in profile.</div>`;
+      return;
+    }
 
     let html = '';
-    displayComps.forEach(comp => {
+    list.slice(0, 5).forEach(comp => {
+      const progress = Math.min(100, Math.max(0, ((comp.proficiency_level || 0) / 5) * 100));
       html += `
         <div class="competency-item">
           <div class="competency-header">
             <span>${comp.name}</span>
-            <span class="text-primary">${comp.progress}%</span>
+            <span class="text-primary">${Math.round(progress)}%</span>
           </div>
           <div class="progress-container">
-            <div class="progress-bar ${comp.progress >= 80 ? 'success' : ''}" style="width: ${comp.progress}%"></div>
+            <div class="progress-bar ${progress >= 80 ? 'success' : ''}" style="width: ${progress}%"></div>
           </div>
         </div>
       `;
@@ -117,27 +151,30 @@ const Dashboard = {
   },
 
   renderLearningPath: function() {
-    const path = this.data.learningPath || mockData.learningPath;
-    
+    const path = this.learningPath;
+    if (!path) return;
+
     const trackEl = document.getElementById('learning-path-track');
-    if (trackEl) trackEl.textContent = path.track;
+    if (trackEl) trackEl.textContent = path.target_role || "Target Path";
 
     const badgeEl = document.getElementById('learning-path-progress-badge');
-    if (badgeEl) badgeEl.textContent = `${path.progress}% Complete`;
+    if (badgeEl) badgeEl.textContent = `${path.current_alignment || 0}% Alignment`;
 
     const timeline = document.getElementById('learning-path-timeline');
     if (!timeline) return;
 
-    let html = '';
-    path.steps.forEach((step, index) => {
-      let statusClass = '';
-      if (step.status === 'Completed') statusClass = 'completed';
-      if (step.status === 'In Progress') statusClass = 'active';
+    if (!path.items || !path.items.length) {
+      timeline.innerHTML = `<div class="text-xs text-muted">No active path steps.</div>`;
+      return;
+    }
 
+    let html = '';
+    path.items.forEach((step) => {
+      let statusClass = step.status === 'COMPLETED' ? 'completed' : (step.status === 'IN_PROGRESS' || step.status === 'AVAILABLE' ? 'active' : '');
       html += `
         <div class="timeline-item ${statusClass}">
-          <div class="text-sm font-weight-bold" style="color: ${statusClass === 'active' ? 'var(--color-primary)' : 'var(--color-neutral)'};">${step.title}</div>
-          <div class="text-xs text-muted">${step.status} • ${step.type}</div>
+          <div class="text-sm font-weight-bold" style="color: ${statusClass === 'active' ? 'var(--color-primary)' : 'var(--color-neutral)'};">${step.competency}</div>
+          <div class="text-xs text-muted">${step.status} • Priority: ${step.priority}</div>
         </div>
       `;
     });
@@ -149,24 +186,31 @@ const Dashboard = {
     const container = document.getElementById('skill-gap-list');
     if (!container) return;
 
+    const gaps = this.skillGaps || [];
+    if (!gaps.length) {
+      container.innerHTML = `<div class="text-xs text-muted p-sm">No current skill gaps identified.</div>`;
+      return;
+    }
+
     let html = '';
-    const gaps = this.data.skillGaps || mockData.skillGaps;
     gaps.forEach(gap => {
-      const badgeClass = AppUtils.getPriorityClass(gap.priority);
+      const priority = gap.gap >= 2.0 ? 'HIGH' : gap.gap >= 1.0 ? 'MEDIUM' : 'LOW';
+      const badgeClass = AppUtils.getPriorityClass(priority);
       html += `
         <div style="border: 1px solid var(--border-default); border-radius: var(--radius-sm); padding: var(--spacing-sm); display: flex; flex-direction: column; gap: var(--spacing-xs);">
           <div class="flex justify-between items-center">
-            <span class="badge ${badgeClass}">${gap.priority}</span>
-            <span class="text-xs text-muted">Target: ${gap.targetDate}</span>
+            <span class="badge ${badgeClass}">${priority}</span>
+            <span class="text-xs text-muted">Req Level: ${gap.required_level}</span>
           </div>
           <div class="font-weight-bold text-sm text-primary">${gap.competency}</div>
-          <div class="text-xs text-secondary font-weight-bold">${gap.impact}</div>
+          <div class="text-xs text-secondary font-weight-bold">Current: ${gap.current_level} / ${gap.required_level}</div>
         </div>
       `;
     });
 
     container.innerHTML = html;
   },
+
 
   renderRecentActivity: function() {
     const container = document.getElementById('recent-activity-list');

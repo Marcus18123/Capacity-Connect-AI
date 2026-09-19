@@ -4,18 +4,111 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Trainer Dashboard - Capacity Connect AI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/style.css">
   <link rel="stylesheet" href="../css/components.css">
-  <style>
-    body { display: flex; align-items: center; justify-content: center; height: 100vh; background-color: var(--bg-canvas); }
-    .card { text-align: center; padding: var(--spacing-2xl); }
-  </style>
+  <link rel="stylesheet" href="../css/dashboard.css">
+  <link rel="stylesheet" href="../css/responsive.css">
 </head>
 <body>
-  <div class="card">
-    <h1 style="color: var(--color-primary); margin-bottom: var(--spacing-md);">Trainer Dashboard</h1>
-    <p class="text-muted mb-lg">This module will be developed in Phase 2.</p>
-    <a href="../index.html" class="btn btn-primary">Return Home</a>
+
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-brand">
+        <div class="sidebar-brand-text">Capacity Connect AI</div>
+      </div>
+      
+      <nav class="sidebar-nav">
+        <a href="trainer-dashboard.html" class="nav-item active">
+          <span class="nav-icon">🤝</span> Trainer Console
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="#" class="nav-item logout-btn" style="padding: var(--spacing-xs) 0;">
+          <span class="nav-icon">🚪</span> Logout
+        </a>
+      </div>
+    </aside>
+
+    <!-- Main Wrapper -->
+    <div class="main-wrapper">
+      
+      <!-- Topbar -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <button class="menu-toggle" id="menuToggle">☰</button>
+          <h1 class="page-title">Trainer Portal</h1>
+        </div>
+        
+        <div class="topbar-right">
+          <div class="user-profile">
+            <div class="user-info" style="text-align: right;">
+              <span class="user-name" id="topbar-user-name">Trainer User</span>
+              <span class="user-role" id="topbar-user-role">Senior Trainer</span>
+            </div>
+            <div class="avatar" id="topbar-user-avatar">TR</div>
+          </div>
+        </div>
+      </header>
+
+      <!-- Page Content -->
+      <main class="page-content">
+        
+        <div class="grid-main">
+          
+          <div class="flex-col gap-lg">
+            
+            <!-- Welcome Header -->
+            <div class="card">
+              <h2 id="trainer-welcome" style="font-size: var(--text-2xl); color: var(--color-primary); margin-bottom: 4px;">Welcome, Trainer</h2>
+              <div class="text-sm text-muted">Approval Status: <span id="trainer-approval-status" class="badge badge-success">APPROVED</span></div>
+            </div>
+
+            <!-- Assigned Trainees Table -->
+            <div class="card">
+              <h3 class="card-title mb-md">Assigned & Matching Trainees</h3>
+              <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                <thead>
+                  <tr style="border-bottom: 2px solid var(--border-default); color: var(--color-neutral-muted); font-size: var(--text-xs);">
+                    <th style="padding: var(--spacing-sm);">TRAINEE NAME</th>
+                    <th style="padding: var(--spacing-sm);">EMAIL</th>
+                    <th style="padding: var(--spacing-sm);">COMPETENCIES</th>
+                    <th style="padding: var(--spacing-sm);">AVG PROFICIENCY</th>
+                  </tr>
+                </thead>
+                <tbody id="trainer-trainees-table">
+                  <!-- Injected via JS -->
+                </tbody>
+              </table>
+            </div>
+
+          </div>
+
+          <div class="flex-col gap-lg">
+            
+            <!-- Trainer Expertise List -->
+            <div class="card">
+              <h3 class="card-title mb-md">Your Expertise Areas</h3>
+              <div id="trainer-expertise-list" class="flex-col gap-sm">
+                <!-- Injected via JS -->
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
   </div>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/api.js"></script>
+  <script src="../js/auth.js"></script>
+  <script src="../js/trainer.js"></script>
 </body>
 </html>

@@ -117,40 +117,17 @@
 
           </div>
 
-          <div class="flex-col gap-lg">
-            
-            <!-- Sample UI -->
+          <div class="flex-col gap-lg" id="active-assessment-container">
+            <!-- Active quiz or instructions render here dynamically -->
             <div class="card card-ai">
-              <span class="badge badge-ai mb-sm">✨ Sample Interface</span>
-              <h3 class="card-title mb-sm">LangGraph Assessment</h3>
-              <p class="text-xs text-muted mb-md">Question 1 of 10</p>
-              
-              <div class="mb-md" style="font-size: var(--text-sm); font-weight: 600;">
-                Which of the following best describes the primary advantage of a Plan-and-Solve architecture over standard ReAct?
-              </div>
-              
-              <div class="flex-col gap-sm mb-lg">
-                <label style="display: flex; gap: var(--spacing-sm); align-items: flex-start; padding: var(--spacing-sm); border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">
-                  <input type="radio" name="q1" style="margin-top: 4px;">
-                  <span class="text-sm">It requires fewer LLM calls overall.</span>
-                </label>
-                <label style="display: flex; gap: var(--spacing-sm); align-items: flex-start; padding: var(--spacing-sm); border: 1px solid var(--border-secondary); background: var(--color-secondary-light); border-radius: var(--radius-sm); cursor: pointer;">
-                  <input type="radio" name="q1" checked style="margin-top: 4px;">
-                  <span class="text-sm">It decouples the planning phase from execution, preventing the agent from getting stuck in loops.</span>
-                </label>
-                <label style="display: flex; gap: var(--spacing-sm); align-items: flex-start; padding: var(--spacing-sm); border: 1px solid var(--border-default); border-radius: var(--radius-sm); cursor: pointer;">
-                  <input type="radio" name="q1" style="margin-top: 4px;">
-                  <span class="text-sm">It only works with OpenAI models.</span>
-                </label>
-              </div>
-
-              <div class="flex justify-between items-center">
-                <button class="btn btn-outline" disabled>Previous</button>
-                <button class="btn btn-primary">Next</button>
-              </div>
+              <span class="badge badge-ai mb-sm">✨ Assessment Portal</span>
+              <h3 class="card-title mb-sm">Verify Your Skills</h3>
+              <p class="text-sm text-muted mb-md">
+                Select an available assessment from the list to test your proficiency. Passing assessments automatically updates your verified competency profile.
+              </p>
             </div>
-
           </div>
+
 
         </div>
 
@@ -159,7 +136,9 @@
   </div>
 
   <script src="../js/main.js"></script>
+  <script src="../js/api.js"></script>
   <script src="../js/auth.js"></script>
   <script src="../js/assessment.js"></script>
+
 </body>
 </html>

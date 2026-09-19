@@ -1,5 +1,4 @@
-from sqlalchemy import Column, String, Integer, ForeignKey, Enum
-from sqlalchemy.dialects.postgresql import JSONB
+from sqlalchemy import Column, String, Integer, ForeignKey, Enum, JSON
 from sqlalchemy.orm import relationship
 from sqlalchemy.dialects.postgresql import UUID
 import enum
@@ -19,7 +18,8 @@ class Question(BaseModel):
     question_text = Column(String, nullable=False)
     question_type = Column(Enum(QuestionType), nullable=False)
     difficulty = Column(String, nullable=True)
-    options = Column(JSONB, nullable=True)
+    options = Column(JSON, nullable=True)
+
     correct_answer = Column(String, nullable=True)
     explanation = Column(String, nullable=True)
     marks = Column(Integer, default=1)

@@ -349,6 +349,56 @@ def get_trainee_learning_path(
         ]
     }
 
+@router.put("/me/learning-path/items/{item_id}/status")
+def update_learning_path_item_status(
+    item_id: str,
+    status_update: dict,
+    current_user: User = Depends(deps.require_role([UserRole.TRAINEE])),
+    db: Session = Depends(get_db)
+):
+    item = (
+        db.query(LearningPathItem)
+        .join(LearningPath, LearningPathItem.learning_path_id == LearningPath.id)
+        .filter(
+            LearningPathItem.id == item_id,
+            LearningPath.trainee_id == current_user.id
+        )
+        .first()
+    )
+
+    if not item:
+        raise HTTPException(status_code=404, detail="Learning path item not found")
+
+    new_status = status_update.get("status")
+    if new_status and new_status in PathItemStatus.__members__:
+        item.status = PathItemStatus[new_status]
+        if new_status == "COMPLETED":
+            item.progress_percentage = 100.0
+            # Unlock the next item if available
+            next_item = (
+                db.query(LearningPathItem)
+                .filter(
+                    LearningPathItem.learning_path_id == item.learning_path_id,
+                    LearningPathItem.sequence == item.sequence + 1
+                )
+                .first()
+            )
+            if next_item and next_item.status == PathItemStatus.LOCKED:
+                next_item.status = PathItemStatus.AVAILABLE
+
+        elif new_status == "IN_PROGRESS":
+            item.progress_percentage = status_update.get("progress_percentage", 50.0)
+
+    db.commit()
+    db.refresh(item)
+
+    return {
+        "id": str(item.id),
+        "status": item.status.value,
+        "progress_percentage": item.progress_percentage
+    }
+
+
 @router.get("/me/recommended-trainers")
 def get_recommended_trainers(
     current_user: User = Depends(deps.require_role([UserRole.TRAINEE])),

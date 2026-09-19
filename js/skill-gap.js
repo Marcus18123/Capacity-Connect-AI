@@ -111,16 +111,28 @@ const SkillGap = {
     const btn = document.getElementById('generate-path-btn');
     const notif = document.getElementById('ai-notification');
 
-    if (btn && notif) {
-      btn.addEventListener('click', () => {
-        notif.style.display = 'block';
+    if (btn) {
+      btn.addEventListener('click', async () => {
+        if (notif) {
+          notif.textContent = "AI engine generating custom learning path...";
+          notif.style.display = 'block';
+        }
 
-        setTimeout(() => {
+        try {
+          await window.api.post('/ai/generate-learning-path', {
+            target_role: this.data?.target_role || "Data Analyst"
+          });
+          setTimeout(() => {
+            window.location.href = 'learning-path.html';
+          }, 800);
+        } catch (e) {
+          console.error("AI Learning Path generation error", e);
           window.location.href = 'learning-path.html';
-        }, 1500);
+        }
       });
     }
   }
+
 };
 
 document.addEventListener('DOMContentLoaded', () => {

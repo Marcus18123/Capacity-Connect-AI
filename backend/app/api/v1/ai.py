@@ -61,12 +61,56 @@ async def generate_learning_path(
     return await provider.generate_structured("Generate learning path", LearningPathResult, LEARNING_PATH_SYSTEM)
 
 @router.get("/insights")
-async def get_insights(current_user: User = Depends(deps.get_current_active_user)):
-    return [
-        {
-            "title": "Your strongest next opportunity",
-            "summary": "SQL is currently your largest prerequisite gap for Data Analyst.",
-            "type": "SKILL_GAP",
-            "severity": "HIGH"
-        }
-    ]
+async def get_insights(
+    db: Session = Depends(get_db),
+    current_user: User = Depends(deps.get_current_active_user)
+):
+    # Retrieve user competencies & gaps dynamically
+    user_comps = db.query(UserCompetency).filter(UserCompetency.user_id == current_user.id).all()
+    comp_count = len(user_comps)
+    verified_count = sum(1 for c in user_comps if c.verification_status.value == "VERIFIED")
+    
+    # Calculate top gap
+    target_role = db.query(Role).filter(Role.name == "Data Analyst", Role.is_active == True).first()
+    insights = []
+    
+    if target_role:
+        role_comps = db.query(RoleCompetency).filter(RoleCompetency.role_id == target_role.id).all()
+        user_levels = {c.competency_id: c.proficiency_level or 0.0 for c in user_comps}
+        
+        largest_gap = None
+        max_gap_size = 0.0
+        
+        for rc in role_comps:
+            curr = user_levels.get(rc.competency_id, 0.0)
+            gap = rc.required_level - curr
+            if gap > max_gap_size:
+                max_gap_size = gap
+                largest_gap = rc.competency.name if rc.competency else "Target Skill"
+                
+        if largest_gap:
+            insights.append({
+                "title": f"High Priority Gap: {largest_gap}",
+                "summary": f"Your current proficiency in {largest_gap} is below target requirements for {target_role.name}. Bridging this gap will boost your alignment index.",
+                "type": "SKILL_GAP",
+                "severity": "CRITICAL" if max_gap_size >= 2.0 else "HIGH"
+            })
+            
+    if verified_count > 0:
+        insights.append({
+            "title": "Verified Competencies Milestone",
+            "summary": f"You have {verified_count} verified competencies in your profile. Keep up the strong progress!",
+            "type": "MILESTONE",
+            "severity": "INFO"
+        })
+
+    if not insights:
+        insights.append({
+            "title": "Your Profile is Ready",
+            "summary": "Take an assessment to verify your skills and receive targeted learning recommendations.",
+            "type": "RECOMMENDATION",
+            "severity": "MEDIUM"
+        })
+        
+    return insights
+

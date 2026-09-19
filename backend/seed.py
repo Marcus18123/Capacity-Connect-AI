@@ -1,5 +1,7 @@
 from sqlalchemy.orm import Session
-from app.core.database import SessionLocal
+from app.core.database import SessionLocal, engine
+from app.models.base import Base
+import app.models
 from app.models.user import User, UserRole, UserStatus
 from app.core.security import get_password_hash
 from app.models.trainee_profile import TraineeProfile
@@ -11,7 +13,11 @@ from app.models.trainer_expertise import TrainerExpertise
 
 
 def init_db(db: Session) -> None:
+    # Ensure tables are created
+    Base.metadata.create_all(bind=engine)
+
     # Seed 1 Admin
+
     admin_email = "admin@capacityconnect.com"
 
     if not db.query(User).filter(User.email == admin_email).first():
@@ -297,7 +303,52 @@ def init_db(db: Session) -> None:
 
         db.commit()
 
+    # Seed Sample Assessment & Questions
+    from app.models.assessment import Assessment, AssessmentStatus
+    from app.models.question import Question, QuestionType
+
+    assessment = db.query(Assessment).filter(Assessment.title == "Data Analyst & SQL Foundations").first()
+    if not assessment:
+        assessment = Assessment(
+            title="Data Analyst & SQL Foundations",
+            description="Evaluates your mastery of SQL querying, data manipulation, and analytical reasoning.",
+            duration_minutes=20,
+            passing_score=70,
+            status=AssessmentStatus.PUBLISHED
+        )
+        db.add(assessment)
+        db.commit()
+        db.refresh(assessment)
+
+        q1 = Question(
+            assessment_id=assessment.id,
+            competency_id=sql_comp.id if sql_comp else None,
+            question_text="Which SQL keyword is used to eliminate duplicate rows from a result set?",
+            question_type=QuestionType.MCQ,
+            difficulty="BEGINNER",
+            options=["UNIQUE", "DISTINCT", "FILTER", "GROUP BY"],
+            correct_answer="DISTINCT",
+            explanation="DISTINCT filters out duplicate records from query results.",
+            marks=1,
+            order_index=1
+        )
+        q2 = Question(
+            assessment_id=assessment.id,
+            competency_id=python_comp.id if python_comp else None,
+            question_text="In Python Pandas, which method is used to aggregate data based on grouping key?",
+            question_type=QuestionType.MCQ,
+            difficulty="INTERMEDIATE",
+            options=["pivot()", "groupby()", "aggregate()", "filter()"],
+            correct_answer="groupby()",
+            explanation="groupby() splits the data into groups for computation.",
+            marks=1,
+            order_index=2
+        )
+        db.add_all([q1, q2])
+        db.commit()
+
     print("Database seeded successfully!")
+
 
 
 def main() -> None:

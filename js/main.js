@@ -135,19 +135,34 @@ const AppUtils = {
   /**
    * Populates user details in the topbar if elements exist
    */
-  populateUserShell: function() {
-    // We try to get user from localStorage to see if someone is logged in
-    const storedUser = localStorage.getItem('capacity_user');
-    let userToDisplay = mockData.user;
+  populateUserShell: async function() {
+    let userToDisplay = {
+      name: "Trainee User",
+      role: "AI Trainee"
+    };
 
+    const storedUser = localStorage.getItem('capacity_user');
     if (storedUser) {
       try {
         const parsed = JSON.parse(storedUser);
         userToDisplay.name = parsed.name || userToDisplay.name;
-        userToDisplay.role = parsed.role === 'admin' ? 'Administrator' : 
-                             parsed.role === 'trainer' ? 'Trainer' : 
-                             'Senior AI Solutions Architect Trainee';
+        userToDisplay.role = parsed.role === 'ADMIN' ? 'Administrator' : 
+                             parsed.role === 'TRAINER' ? 'Senior Trainer' : 
+                             'Trainee';
       } catch(e) {}
+    } else if (window.api) {
+      try {
+        const user = await window.api.get('/auth/me');
+        if (user) {
+          localStorage.setItem('capacity_user', JSON.stringify(user));
+          userToDisplay.name = user.name;
+          userToDisplay.role = user.role === 'ADMIN' ? 'Administrator' : 
+                               user.role === 'TRAINER' ? 'Senior Trainer' : 
+                               'Trainee';
+        }
+      } catch (e) {
+        console.warn("Could not fetch user profile", e);
+      }
     }
 
     const userNameEl = document.getElementById('topbar-user-name');
@@ -157,15 +172,11 @@ const AppUtils = {
     if (userNameEl) userNameEl.textContent = userToDisplay.name;
     if (userRoleEl) userRoleEl.textContent = userToDisplay.role;
     if (avatarEl) {
-      // Create initials
       const initials = userToDisplay.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
       avatarEl.textContent = initials;
     }
   },
 
-  /**
-   * Creates a simple DOM element with classes and text
-   */
   createElement: function(tag, className, textContent) {
     const el = document.createElement(tag);
     if (className) el.className = className;
@@ -173,11 +184,9 @@ const AppUtils = {
     return el;
   },
 
-  /**
-   * Helper to determine priority badge classes
-   */
   getPriorityClass: function(priority) {
-    switch(priority.toUpperCase()) {
+    switch((priority || '').toUpperCase()) {
+      case 'CRITICAL':
       case 'HIGH': return 'badge-danger';
       case 'MEDIUM': return 'badge-warning';
       case 'LOW': return 'badge-success';
@@ -185,6 +194,7 @@ const AppUtils = {
     }
   }
 };
+
 
 // Initialize on DOM Load
 document.addEventListener('DOMContentLoaded', () => {

@@ -44,37 +44,35 @@ const LearningPath = {
 
       if (step.status === 'COMPLETED') {
         stepClass = 'completed';
-
         actionBtn = `
-          <button class="btn btn-outline" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
-            Review
+          <button class="btn btn-outline" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;" disabled>
+            Completed ✓
           </button>
         `;
       } else if (step.status === 'IN_PROGRESS') {
         stepClass = 'active';
-
         actionBtn = `
-          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
-            Continue
+          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;" onclick="LearningPath.updateStepStatus('${step.id}', 'COMPLETED')">
+            Mark Complete
           </button>
         `;
-
         progressHtml = `
           <div class="progress-container mt-sm" style="height: 4px; width: 100px;">
-            <div class="progress-bar" style="width: ${step.progress_percentage}%"></div>
+            <div class="progress-bar" style="width: ${step.progress_percentage || 50}%"></div>
           </div>
         `;
       } else if (step.status === 'AVAILABLE') {
         actionBtn = `
-          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
-            Start
+          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;" onclick="LearningPath.updateStepStatus('${step.id}', 'IN_PROGRESS')">
+            Start Step
           </button>
         `;
       } else {
         actionBtn = `
-          <span class="text-xs text-muted">${status}</span>
+          <span class="text-xs text-muted">Locked</span>
         `;
       }
+
 
       const icon = step.status === 'COMPLETED'
         ? '✓'
@@ -147,8 +145,21 @@ const LearningPath = {
     roleElements.forEach(element => {
       element.textContent = this.data.target_role;
     });
+  },
+
+  updateStepStatus: async function(itemId, newStatus) {
+    try {
+      await window.api.put(`/trainees/me/learning-path/items/${itemId}/status`, {
+        status: newStatus
+      });
+      await this.init();
+    } catch (e) {
+      console.error("Failed to update step status", e);
+      alert("Failed to update step: " + e.message);
+    }
   }
 };
+
 
 document.addEventListener('DOMContentLoaded', () => {
   if (document.getElementById('learning-path-steps')) {

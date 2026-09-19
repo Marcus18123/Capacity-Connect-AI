@@ -1,1 +1,7 @@
 docs/PRD.md
+*.db
+*.sqlite
+*.sqlite3
+__pycache__/
+*.pyc
+.env
