@@ -137,7 +137,7 @@ const AppUtils = {
    */
   populateUserShell: function() {
     // We try to get user from localStorage to see if someone is logged in
-    const storedUser = localStorage.getItem('ccai_user');
+    const storedUser = localStorage.getItem('capacity_user');
     let userToDisplay = mockData.user;
 
     if (storedUser) {

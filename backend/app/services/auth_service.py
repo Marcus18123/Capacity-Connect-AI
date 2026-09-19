@@ -1,7 +1,7 @@
 from sqlalchemy.orm import Session
 from app.schemas.user import UserCreate
 from app.repositories import user_repository
-from app.core.security import get_password_hash, verify_password
+from app.core.security import verify_password
 from app.models.user import UserStatus, UserRole
 from app.models.trainee_profile import TraineeProfile
 from app.models.trainer_profile import TrainerProfile
@@ -11,34 +11,15 @@ def register_user(db: Session, user_in: UserCreate):
     if existing_user:
         return None
 
-    status = UserStatus.PENDING
-    if user_in.role == UserRole.TRAINEE:
-        status = UserStatus.ACTIVE
-
-    hashed_password = get_password_hash(user_in.password)
-    
-    db_user = user_repository.user.create(
-        db, 
-        obj_in=UserCreate(
-            name=user_in.name,
-            email=user_in.email,
-            role=user_in.role,
-            password=hashed_password # This replaces the plain password
-        )
-    )
-    
-    # Force override the hash and status since user_in schema has plain password
-    db_user.password_hash = hashed_password
-    db_user.status = status
-    db.add(db_user)
+    db_user = user_repository.user.create(db, obj_in=user_in)
 
     if user_in.role == UserRole.TRAINEE:
-        profile = TraineeProfile(user_id=db_user.id)
-        db.add(profile)
+        db_user.status = UserStatus.ACTIVE
+        db.add(TraineeProfile(user_id=db_user.id))
     elif user_in.role == UserRole.TRAINER:
-        profile = TrainerProfile(user_id=db_user.id)
-        db.add(profile)
-        
+        db_user.status = UserStatus.PENDING
+        db.add(TrainerProfile(user_id=db_user.id))
+
     db.commit()
     db.refresh(db_user)
     return db_user
@@ -48,5 +29,7 @@ def authenticate_user(db: Session, email: str, password: str):
     if not user:
         return None
     if not verify_password(password, user.password_hash):
+        return None
+    if user.status != UserStatus.ACTIVE:
         return None
     return user

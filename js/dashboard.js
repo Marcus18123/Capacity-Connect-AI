@@ -56,40 +56,41 @@ const Dashboard = {
   },
 
   populateKPIs: function() {
-    const user = this.data.user || mockData.user;
-    const kpis = this.data.kpis || { 
-        competency_index: user.competencyIndex, 
-        active_courses: user.activeLearningHours, 
-        skill_gap_count: user.skillGapsCount, 
-        verified_competencies: user.verifiedCompetenciesCount 
-    };
-    
-    // Welcome message
-    const welcomeEl = document.getElementById('welcome-message');
-    if (welcomeEl) {
-      const firstName = user.name.split(' ')[0];
-      welcomeEl.textContent = `Good morning, ${firstName}`;
-    }
+  const user = this.data.user || {};
+  const kpis = this.data.kpis || {};
 
-    // KPIs
-    const kpiIndex = document.getElementById('kpi-index');
-    if (kpiIndex) kpiIndex.textContent = `${kpis.competency_index || user.competencyIndex}%`;
+  const welcomeEl = document.getElementById('welcome-message');
+  if (welcomeEl && user.name) {
+    const firstName = user.name.split(' ')[0];
+    welcomeEl.textContent = `Good morning, ${firstName}`;
+  }
 
-    const kpiLearning = document.getElementById('kpi-learning');
-    if (kpiLearning) kpiLearning.textContent = `${kpis.active_courses || user.activeLearningHours}`;
+  const kpiIndex = document.getElementById('kpi-index');
+  if (kpiIndex) {
+    kpiIndex.textContent = `${kpis.competency_index ?? 0}%`;
+  }
 
-    const kpiLearningProgress = document.getElementById('kpi-learning-progress');
-    if (kpiLearningProgress) {
-      const pct = 50; // Mock default
-      kpiLearningProgress.style.width = `${pct}%`;
-    }
+  const kpiLearning = document.getElementById('kpi-learning');
+  if (kpiLearning) {
+    kpiLearning.textContent = `${kpis.active_courses ?? 0}`;
+  }
 
-    const kpiGaps = document.getElementById('kpi-gaps');
-    if (kpiGaps) kpiGaps.textContent = kpis.skill_gap_count || user.skillGapsCount;
+  const kpiLearningProgress = document.getElementById('kpi-learning-progress');
+  if (kpiLearningProgress) {
+    const progress = kpis.learning_progress ?? 0;
+    kpiLearningProgress.style.width = `${Math.min(Math.max(progress, 0), 100)}%`;
+  }
 
-    const kpiVerified = document.getElementById('kpi-verified');
-    if (kpiVerified) kpiVerified.textContent = kpis.verified_competencies || user.verifiedCompetenciesCount;
-  },
+  const kpiGaps = document.getElementById('kpi-gaps');
+  if (kpiGaps) {
+    kpiGaps.textContent = kpis.skill_gap_count ?? 0;
+  }
+
+  const kpiVerified = document.getElementById('kpi-verified');
+  if (kpiVerified) {
+    kpiVerified.textContent = kpis.verified_competencies ?? 0;
+  }
+},
 
   renderCompetencyOverview: function() {
     const container = document.getElementById('competency-bars-container');

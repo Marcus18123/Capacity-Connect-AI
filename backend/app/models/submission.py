@@ -26,4 +26,4 @@ class Submission(BaseModel):
     evaluated_by = Column(UUID(as_uuid=True), ForeignKey("users.id", ondelete="SET NULL"), nullable=True)
 
     project = relationship("Project", back_populates="submissions")
-    trainee = relationship("User", back_populates="project_submissions")
+    trainee = relationship("User", back_populates="project_submissions", foreign_keys=[trainee_id])

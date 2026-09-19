@@ -29,7 +29,7 @@ class User(BaseModel):
     trainer_expertise = relationship("TrainerExpertise", back_populates="trainer", cascade="all, delete-orphan")
     enrollments = relationship("Enrollment", back_populates="trainee", cascade="all, delete-orphan")
     assessment_results = relationship("AssessmentResult", back_populates="trainee", cascade="all, delete-orphan")
-    project_submissions = relationship("Submission", back_populates="trainee", cascade="all, delete-orphan")
+    project_submissions = relationship("Submission", back_populates="trainee", foreign_keys="Submission.trainee_id", cascade="all, delete-orphan")
     learning_paths = relationship("LearningPath", back_populates="trainee", cascade="all, delete-orphan")
     skill_gaps = relationship("SkillGap", back_populates="trainee", cascade="all, delete-orphan")
     notifications = relationship("Notification", back_populates="user", cascade="all, delete-orphan")

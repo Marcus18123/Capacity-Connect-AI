@@ -1,63 +1,120 @@
-/**
- * CAPACITY CONNECT AI - Learning Path Logic
- */
-
 const LearningPath = {
-  init: function() {
-    this.renderPathSteps();
+  data: null,
+
+  init: async function() {
+    try {
+      this.data = await window.api.get('/trainees/me/learning-path');
+      this.renderPathSteps();
+      this.updatePathInfo();
+    } catch (error) {
+      console.error('Failed to load learning path:', error);
+
+      const container = document.getElementById('learning-path-steps');
+
+      if (container) {
+        container.innerHTML = `
+          <div style="padding: var(--spacing-md); text-align: center;">
+            Failed to load learning path.
+          </div>
+        `;
+      }
+    }
+  },
+
+  formatStatus: function(status) {
+    return status
+      .toLowerCase()
+      .replace(/_/g, ' ')
+      .replace(/\b\w/g, char => char.toUpperCase());
   },
 
   renderPathSteps: function() {
     const container = document.getElementById('learning-path-steps');
-    if (!container) return;
 
-    // Hardcoded extended path specifically for this view to match requirements
-    const steps = [
-      { id: 1, title: "Statistics Fundamentals", comp: "Statistics", duration: "2 weeks", diff: "Beginner", status: "Completed", icon: "✓" },
-      { id: 2, title: "Data Visualization", comp: "Data Analysis", duration: "1 week", diff: "Intermediate", status: "Completed", icon: "✓" },
-      { id: 3, title: "Time-Series Analysis", comp: "Time-Series Forecasting", duration: "3 weeks", diff: "Advanced", status: "In Progress", icon: "3", progress: 45 },
-      { id: 4, title: "Machine Learning Foundations", comp: "Machine Learning", duration: "4 weeks", diff: "Intermediate", status: "Upcoming", icon: "4" },
-      { id: 5, title: "Applied Agentic Project", comp: "Multi-Agent Swarms", duration: "2 weeks", diff: "Advanced", status: "Locked", icon: "🔒" }
-    ];
+    if (!container || !this.data) return;
 
     let html = '';
-    steps.forEach(step => {
-      
+
+    this.data.items.forEach(step => {
+      const status = this.formatStatus(step.status);
+
       let stepClass = '';
       let actionBtn = '';
       let progressHtml = '';
 
-      if (step.status === 'Completed') {
+      if (step.status === 'COMPLETED') {
         stepClass = 'completed';
-        actionBtn = `<button class="btn btn-outline" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">Review</button>`;
-      } else if (step.status === 'In Progress') {
+
+        actionBtn = `
+          <button class="btn btn-outline" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
+            Review
+          </button>
+        `;
+      } else if (step.status === 'IN_PROGRESS') {
         stepClass = 'active';
-        actionBtn = `<button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">Continue</button>`;
+
+        actionBtn = `
+          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
+            Continue
+          </button>
+        `;
+
         progressHtml = `
           <div class="progress-container mt-sm" style="height: 4px; width: 100px;">
-            <div class="progress-bar" style="width: ${step.progress}%"></div>
+            <div class="progress-bar" style="width: ${step.progress_percentage}%"></div>
           </div>
         `;
+      } else if (step.status === 'AVAILABLE') {
+        actionBtn = `
+          <button class="btn btn-primary" style="font-size: var(--text-xs); padding: 0.25rem 0.5rem;">
+            Start
+          </button>
+        `;
       } else {
-        actionBtn = `<span class="text-xs text-muted">${step.status}</span>`;
+        actionBtn = `
+          <span class="text-xs text-muted">${status}</span>
+        `;
       }
+
+      const icon = step.status === 'COMPLETED'
+        ? '✓'
+        : step.sequence;
 
       html += `
         <div class="path-step ${stepClass}">
-          <div class="step-number">${step.icon}</div>
+          <div class="step-number">${icon}</div>
+
           <div class="step-content">
             <div class="flex justify-between items-start">
               <div>
-                <h4 style="color: var(--color-primary); margin-bottom: 4px;">${step.title}</h4>
+                <h4 style="color: var(--color-primary); margin-bottom: 4px;">
+                  ${step.competency}
+                </h4>
+
                 <div class="text-xs text-muted flex gap-sm" style="flex-wrap: wrap;">
-                  <span><strong class="text-neutral">Competency:</strong> ${step.comp}</span>
+                  <span>
+                    <strong class="text-neutral">Competency:</strong>
+                    ${step.competency}
+                  </span>
+
                   <span>|</span>
-                  <span><strong class="text-neutral">Duration:</strong> ${step.duration}</span>
+
+                  <span>
+                    <strong class="text-neutral">Priority:</strong>
+                    ${step.priority}
+                  </span>
+
                   <span>|</span>
-                  <span><strong class="text-neutral">Difficulty:</strong> ${step.diff}</span>
+
+                  <span>
+                    <strong class="text-neutral">Status:</strong>
+                    ${status}
+                  </span>
                 </div>
+
                 ${progressHtml}
               </div>
+
               <div>
                 ${actionBtn}
               </div>
@@ -67,7 +124,29 @@ const LearningPath = {
       `;
     });
 
+    if (!this.data.items.length) {
+      html = `
+        <div style="padding: var(--spacing-md); text-align: center;">
+          No learning items are currently required.
+        </div>
+      `;
+    }
+
     container.innerHTML = html;
+  },
+
+  updatePathInfo: function() {
+    const alignmentElements = document.querySelectorAll('[data-learning-alignment]');
+
+    alignmentElements.forEach(element => {
+      element.textContent = `${this.data.current_alignment}%`;
+    });
+
+    const roleElements = document.querySelectorAll('[data-learning-role]');
+
+    roleElements.forEach(element => {
+      element.textContent = this.data.target_role;
+    });
   }
 };
 
